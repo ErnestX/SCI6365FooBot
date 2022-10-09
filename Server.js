@@ -1,9 +1,6 @@
-//////////////// Declarations /////////////////
-var client;
-
 //////////////// Server Starts /////////////////
 
-initializeClient();
+var client = createClient();
 
 loadDebugEvents(); 
 
@@ -13,24 +10,26 @@ loadDebugEvents();
 
 //////////////// Function Definitions ////////////////
 
-function initializeClient() {
+function createClient() {
 	const qrcode = require('qrcode-terminal');
 	const { Client } = require('whatsapp-web.js');
-	client = new Client();
+	var c = new Client();
 
-	client.on('qr', qr => {
+	c.on('qr', qr => {
 		qrcode.generate(qr, { small: true });
 	});
 
-	client.on('ready', () => {
+	c.on('ready', () => {
 		console.log('Client is ready!');
 	});
 
-	client.initialize();
+	c.initialize();
+
+	return c;
 }
 
 function loadDebugEvents() {
-
+	
 	// test receieving message
 	client.on('message', message => {
 		console.log(message.body);
