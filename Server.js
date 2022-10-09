@@ -42,4 +42,12 @@ function loadDebugEvents() {
 			message.reply('pong');
 		}
 	});
+
+	client.on('message', message => {
+		if(message.body === 'bot') {
+			message.reply('Hi, I am bot.');
+		}
+	});
 }
+
+ 
