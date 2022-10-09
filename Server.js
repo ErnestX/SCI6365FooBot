@@ -18,8 +18,8 @@ client.on('message', message => {
 });
 
 client.on('message', message => {
-	if(message.body === '!ping') {
-		message.reply('pong');
+	if(message.body === 'bot') {
+		message.reply('Hi, I am bot.');
 	}
 });
  
