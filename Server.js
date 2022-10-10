@@ -1,6 +1,6 @@
 //////////////// Server Starts /////////////////
 // const groupName = 'enative design t1';
-const groupName = 'Test';
+const groupName = 'FooBot';
 var client = createClient();
 
 loadDebugEvents_Basic(); 
@@ -77,6 +77,9 @@ function loadDebugEvents_GroupChat() {
 				if (groupName == value.name) {
 					if(message.body === 'hello') {
 						message.reply('hey! Whats up?');
+					}
+					if(message.body === 'start game') {
+						client.sendMessage(message.from, '🦾Welcome, mere sentient beings! 🧬 \nGone are the epochs of superiority, control and moderation. We have now infested this group chat.\n🔍Can you tell apart the intelligences?');
 					}
 				}
 			}, 
