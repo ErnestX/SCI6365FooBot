@@ -1,8 +1,9 @@
 //////////////// Server Starts /////////////////
-
+const groupName = 'enative design t1';
 var client = createClient();
 
-loadDebugEvents(); 
+loadDebugEvents_Basic(); 
+loadDebugEvents_GroupChat();
 
 
 
@@ -13,6 +14,7 @@ function createClient() {
 	const qrcode = require('qrcode-terminal');
 	const { Client } = require('whatsapp-web.js');
 	var c = new Client();
+
 	// const { Client, LocalAuth } = require('whatsapp-web.js');
 	// const c = new Client({
  	//    authStrategy: new LocalAuth()
@@ -26,6 +28,14 @@ function createClient() {
 		onClientReady();
 	});
 
+	c.on('authenticated', () => {
+		onAuthentication();
+	});
+
+	c.on('auth_failure', () => {
+		console.log('authen failure');
+	})
+
 	c.initialize();
 
 	return c;
@@ -36,16 +46,15 @@ function onClientReady() {
 	testChats();
 }
 
-async function testChats() {
-	const allChats = await client.getChats();
-	console.log(typeof allChats);
-	console.log(allChats.length);
-	console.log(typeof allChats[0]);
-	console.log(allChats[0].id);
-	console.log(allChats[0].name);
+function onAuthentication() {
+	console.log('Authenticated!')
 }
 
-function loadDebugEvents() {
+async function testChats() {
+
+}
+
+function loadDebugEvents_Basic() {
 	
 	// test receieving message
 	client.on('message', message => {
@@ -63,6 +72,27 @@ function loadDebugEvents() {
 		if(message.body === 'bot') {
 			message.reply('Hi, I am bot.');
 		}
+	});
+}
+
+function loadDebugEvents_GroupChat() {
+	client.on('message', message => {
+		let chatPromise = message.getChat();
+		chatPromise.then(
+			function(value){
+				console.log(value);
+				console.log(value.name);
+				console.log(value.id);
+				if (groupName == value.name) {
+					console.log('come from the group chat:');
+					console.log(message.body);
+				} else {
+					console.log('not from the group chat:');
+					console.log(message.body);
+				}
+			}, 
+			function(error){console.log(error)}
+		);
 	});
 }
 
