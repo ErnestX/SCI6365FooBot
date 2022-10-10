@@ -1,9 +1,9 @@
 //////////////// Server Starts /////////////////
-
+const groupName = 'enative design t1';
 var client = createClient();
 
-loadDebugEvents(); 
-
+loadDebugEvents_Basic(); 
+loadDebugEvents_GroupChat();
 
 
 
@@ -15,20 +15,46 @@ function createClient() {
 	const { Client } = require('whatsapp-web.js');
 	var c = new Client();
 
+	// const { Client, LocalAuth } = require('whatsapp-web.js');
+	// const c = new Client({
+ 	//    authStrategy: new LocalAuth()
+	// });
+
 	c.on('qr', qr => {
 		qrcode.generate(qr, { small: true });
 	});
 
 	c.on('ready', () => {
-		console.log('Client is ready!');
+		onClientReady();
 	});
+
+	c.on('authenticated', () => {
+		onAuthentication();
+	});
+
+	c.on('auth_failure', () => {
+		console.log('authen failure');
+	})
 
 	c.initialize();
 
 	return c;
 }
 
-function loadDebugEvents() {
+function onClientReady() {
+	console.log('Client is ready!');
+	testChats();
+}
+
+function onAuthentication() {
+	console.log('Authenticated!')
+}
+
+async function testChats() {
+
+}
+
+function loadDebugEvents_Basic() {
 	
 	// test receieving message
 	client.on('message', message => {
@@ -48,5 +74,28 @@ function loadDebugEvents() {
 		}
 	});
 }
+
+// Group Chat Events
+function loadDebugEvents_GroupChat() {
+	client.on('message', message => {
+		let chatPromise = message.getChat();
+		chatPromise.then(
+			function(value){
+				console.log(value);
+				console.log(value.name);
+				console.log(value.id);
+				if (groupName == value.name) {
+					console.log('come from the group chat:');
+					console.log(message.body);
+				} else {
+					console.log('not from the group chat:');
+					console.log(message.body);
+				}
+			}, 
+			function(error){console.log(error)}
+		);
+	});
+}
+
 
  
