@@ -1,12 +1,10 @@
 //////////////// Server Starts /////////////////
-const groupName = 'enative design t1';
+// const groupName = 'enative design t1';
+const groupName = 'Test';
 var client = createClient();
 
 loadDebugEvents_Basic(); 
 loadDebugEvents_GroupChat();
-
-
-
 
 //////////////// Function Definitions ////////////////
 
@@ -54,6 +52,7 @@ async function testChats() {
 
 }
 
+// General Chat Events
 function loadDebugEvents_Basic() {
 	
 	// test receieving message
@@ -67,12 +66,6 @@ function loadDebugEvents_Basic() {
 			message.reply('pong');
 		}
 	});
-
-	client.on('message', message => {
-		if(message.body === 'bot') {
-			message.reply('Hi, I am bot.');
-		}
-	});
 }
 
 // Group Chat Events
@@ -81,15 +74,10 @@ function loadDebugEvents_GroupChat() {
 		let chatPromise = message.getChat();
 		chatPromise.then(
 			function(value){
-				console.log(value);
-				console.log(value.name);
-				console.log(value.id);
 				if (groupName == value.name) {
-					console.log('come from the group chat:');
-					console.log(message.body);
-				} else {
-					console.log('not from the group chat:');
-					console.log(message.body);
+					if(message.body === 'hello') {
+						message.reply('hey! Whats up?');
+					}
 				}
 			}, 
 			function(error){console.log(error)}
