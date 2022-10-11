@@ -5,10 +5,42 @@ var client = createClient();
 loadDebugEvents_Basic(); 
 loadDebugEvents_GroupChat();
 
+sendToChatBot("Helllllolololo");
 
 
 
 //////////////// Function Definitions ////////////////
+
+async function sendToChatBot(text) {
+	var request = require('request-promise');
+
+	var options = {
+        method: 'POST',
+  
+        // http:flaskserverurl:port/route
+        uri: 'http://127.0.0.1:5000/fooBot',
+        body: text,
+  
+        // Automatically stringifies the body to JSON 
+        json: true
+    };
+
+	var sendrequest = await request(options)
+  
+    // The parsedBody contains the data sent back from the Flask server 
+    .then(function (parsedBody) {
+        console.log(parsedBody);
+              
+        // You can do something with returned data
+        let result;
+        result = parsedBody['result'];
+        console.log("Reply: ", result);
+    })
+    .catch(function (err) {
+        console.log(err);
+    });
+}
+
 
 function createClient() {
 	const qrcode = require('qrcode-terminal');
