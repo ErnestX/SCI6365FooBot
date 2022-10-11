@@ -1,11 +1,12 @@
 //////////////// Server Starts /////////////////
-const groupName = 'enative design t1';
+//const groupName = 'enative design t1';
+const groupName = 'FooBot';
 var client = createClient();
 
 loadDebugEvents_Basic(); 
 loadDebugEvents_GroupChat();
 
-sendToChatBot("Helllllolololo");
+sendToChatBot("Hello how are you?");
 
 
 
