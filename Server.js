@@ -87,6 +87,3 @@ function loadDebugEvents_GroupChat() {
 		);
 	});
 }
-
-
- 
