@@ -136,7 +136,7 @@ function loadEvents_GroupChat() {
 	client.on('message', message => {
 		let chatPromise = message.getChat();
 		chatPromise.then(
-			async function(value){
+			function(value){
 				if (groupName == value.name) {
 					console.log('come from the group chat:');
 					var messageText = message.body;
@@ -144,19 +144,9 @@ function loadEvents_GroupChat() {
 					if (messageText.length > 0) {
 
 						//////////// Talk to Bot and Relay Reply /////////////
-						var response = await sendToChatBotAndRelayReply(message.from, messageText);
-						// .then(function(responseBody) {
-						// 	console.log('response received:');
-						// 	message.reply(responseBody);
-						//});
-
+						sendToChatBotAndRelayReply(message.from, messageText);
 
 					}
-					
-
-
-
-
 				} else {
 					console.log('not from the group chat:');
 					console.log(message.body);
