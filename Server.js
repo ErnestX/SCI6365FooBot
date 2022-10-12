@@ -3,16 +3,18 @@
 const groupName = 'FooBot';
 var client = createClient();
 
-loadDebugEvents_Basic(); 
-loadDebugEvents_GroupChat();
+loadEvents_GroupChat()
 
-sendToChatBot("Hello how are you?");
+
+//loadDebugEvents_Basic(); 
+//loadDebugEvents_GroupChat();
+//sendToChatBot("Hello how are you?");
 
 
 
 //////////////// Function Definitions ////////////////
 
-async function sendToChatBot(text) {
+async function sendToChatBotAndRelayReply(chatId, text) {
 	var request = require('request-promise');
 
 	var options = {
@@ -36,6 +38,7 @@ async function sendToChatBot(text) {
         let result;
         result = parsedBody['result'];
         console.log("Reply: ", result);
+		client.sendMessage(chatId, result);
     })
     .catch(function (err) {
         console.log(err);
@@ -129,5 +132,38 @@ function loadDebugEvents_GroupChat() {
 	});
 }
 
+function loadEvents_GroupChat() {
+	client.on('message', message => {
+		let chatPromise = message.getChat();
+		chatPromise.then(
+			async function(value){
+				if (groupName == value.name) {
+					console.log('come from the group chat:');
+					var messageText = message.body;
+					console.log(messageText);
+					if (messageText.length > 0) {
 
+						//////////// Talk to Bot and Relay Reply /////////////
+						var response = await sendToChatBotAndRelayReply(message.from, messageText);
+						// .then(function(responseBody) {
+						// 	console.log('response received:');
+						// 	message.reply(responseBody);
+						//});
+
+
+					}
+					
+
+
+
+
+				} else {
+					console.log('not from the group chat:');
+					console.log(message.body);
+				}
+			}, 
+			function(error){console.log(error)}
+		);
+	});
+}
  
